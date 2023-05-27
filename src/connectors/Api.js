@@ -24,10 +24,17 @@ export async function findCommonGames(usernames) {
   const steamIds = await Promise.all(usernamesArray.map(username => getSteamId(username)));
   const ownedGames = await Promise.all(steamIds.map(steamId => getOwnedGames(steamId)));
 
-  // Calculate intersection
-  const commonGames = ownedGames.reduce((common, games) => {
-    return common.filter(game => games.some(game2 => game2.appid === game.appid));
-  }, ownedGames[0]);
+// Calculate intersection and include playtime_forever
+const commonGames = ownedGames.reduce((common, games) => {
+  return common.map(game => {
+    // find the matching game in the second list to get its playtime
+    const game2 = games.find(g => g.appid === game.appid);
+    return game2 ? { ...game, playtime_forever: game2.playtime_forever } : game;
+  }).filter(game => games.some(game2 => game2.appid === game.appid));
+}, ownedGames[0]);
+
+// Sort games by playtime, in descending order
+commonGames.sort((a, b) => b.playtime_forever - a.playtime_forever);
 
   return commonGames;
 }
