@@ -6,12 +6,14 @@ function ResultsComponent({ games }) {
   }
 
   return (
-    <div>
-      <h2>Common Games</h2>
-        <div className='gameBox'></div>{games.map(game => (
+    <div className='resultsContainer'>
+        <div className='gameBox'>{games.map(game => (
             console.log(game),
-          <div className='gameInfo' key={game.appid}>{game.name}</div>
-        ))}
+          <div className='gameInfo' key={game.appid}>
+            <img src={`http://media.steampowered.com/steamcommunity/public/images/apps/${game.appid}/${game.img_icon_url}.jpg`}></img>
+            <div>{game.name}</div>
+            </div>
+        ))}</div>
     </div>
   );
 }

@@ -26,18 +26,20 @@ function Search({ onSubmit }) {
   };
 
   return (
-    <div>
-      <input type="text" value={name} onChange={handleNameChange} />
-      <button onClick={handleAddName}>Add</button>
-      <ul>
+    <div className='searchContainer'>
+      <div className="inputContainer">
+        <input type="text" value={name} onChange={handleNameChange} />
+        <button onClick={handleAddName}>Add</button>
+      </div>
+      <div className="namesContainer">
         {namesList.map((name, index) => (
-          <li key={index}>
+          <div className="nameTag" key={index}>
             {name}
-            <button onClick={() => handleDeleteName(index)}>Delete</button>
-          </li>
+            <button onClick={() => handleDeleteName(index)}>X</button>
+          </div>
         ))}
-      </ul>
-      <button onClick={handleSubmit}>Search</button>
+      </div>
+      <button className='searchButton' onClick={handleSubmit}>Search</button>
     </div>
   );
 }

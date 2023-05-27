@@ -13,7 +13,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Steam Common Games Finder</h1>
+      <h1>Steam Common Game Finder</h1>
       <Search onSubmit={handleSearch} />
       <Results games={games} />
     </div>
