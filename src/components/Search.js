@@ -72,7 +72,7 @@ function Search({ onSubmit }) {
     <div className='searchContainer'>
       <div className="inputContainer">
         <input type="text" placeholder='steamId64(DEC) / customUrl Vanity Name' value={name} onChange={handleNameChange} />
-        <button onClick={handleAddName}>Add</button>
+        <button onTouchStart={handleAddName}>Add</button>
       </div>
       <div className="namesContainer">
         {players.map((player, index) => (
@@ -85,7 +85,7 @@ function Search({ onSubmit }) {
             <p>{player[0].personaname}</p>
             <button 
               className='closeNameTag' 
-              onClick={() => handleDeleteName(index)}
+              onTouchStart={() => handleDeleteName(index)}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
             >
@@ -99,7 +99,7 @@ function Search({ onSubmit }) {
         <div className="notificationContainer" style={{ backgroundColor: notification.color }}>
         <div className="notificationBox">
             <p>{notification.message}</p>
-            <button onClick={closeNotification}>Close</button>
+            <button onTouchStart={closeNotification}>Close</button>
           </div>
         </div>
       )}
