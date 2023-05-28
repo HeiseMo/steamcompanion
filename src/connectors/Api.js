@@ -18,11 +18,9 @@ export async function getUserInfo(steamId) {
   if (isNaN(steamId)) {
     const isNotaNum = await getSteamId(steamId);  // Await directly on the promise returned by getSteamId
     const response = await axios.get(`http://localhost:5000/api/steam/user/${isNotaNum}`);
-    console.log(response.data.response.players[0], "isnotanum return")
     return response.data.response;
   }
   const response = await axios.get(`http://localhost:5000/api/steam/user/${steamId}`);
-  console.log(response.data.response, "normal response return")
   return response.data.response;
 }
 
