@@ -1,27 +1,50 @@
 import axios from 'axios';
 
 // Get a user's Steam ID
-async function getSteamId(input) {
-  // Check if the input is a number (Steam ID)
-  if (!isNaN(input)) {
-    return input;
+export async function getSteamId(input) {
+  // Check if the input is an object with a 'steamid' property
+  if (Array.isArray(input) && input[0] && input[0].hasOwnProperty('steamid')) {
+    return input[0].steamid;
   }
 
   // The input is a username (Vanity URL)
   const response = await axios.get(`http://localhost:5000/api/steam/${input}`);
+  
   return response.data.response.steamid;
+}
+
+// Get all user information
+export async function getUserInfo(steamId) {
+  if (isNaN(steamId)) {
+    const isNotaNum = await getSteamId(steamId);  // Await directly on the promise returned by getSteamId
+    const response = await axios.get(`http://localhost:5000/api/steam/user/${isNotaNum}`);
+    console.log(response.data.response.players[0], "isnotanum return")
+    return response.data.response;
+  }
+  const response = await axios.get(`http://localhost:5000/api/steam/user/${steamId}`);
+  console.log(response.data.response, "normal response return")
+  return response.data.response;
 }
 
 // Get the games a user owns
 async function getOwnedGames(steamId) {
+  console.log(steamId, "checking owned game steamid")
   const response = await axios.get(`http://localhost:5000/api/steam/games/${steamId}`);
+  console.log(response, "ownedgame responce")
   return response.data.response.games;
 }
 
 // Find games two users both own
 export async function findCommonGames(usernames) {
   const usernamesArray = Array.isArray(usernames) ? usernames : usernames.split(',');
-  const steamIds = await Promise.all(usernamesArray.map(username => getSteamId(username)));
+  console.log(usernamesArray, "first step of usernamesArray")
+  
+  const steamIds = await Promise.all(
+    usernamesArray.map(userArray => getSteamId(userArray))
+  );
+
+  console.log(steamIds, 'steam ids')
+  
   const ownedGames = await Promise.all(steamIds.map(steamId => getOwnedGames(steamId)));
 
 // Calculate intersection and include playtime_forever

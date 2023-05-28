@@ -6,14 +6,14 @@ import { findCommonGames } from './connectors/Api';
 function App() {
   const [games, setGames] = useState(null);
 
-  const handleSearch = async (nameList) => {
-    const commonGames = await findCommonGames(nameList);
+  const handleSearch = async (players) => {
+    const commonGames = await findCommonGames(players);
     setGames(commonGames);
   };
 
   return (
     <div className="App">
-      <h1>Steam Common Game Finder</h1>
+      <p>Steam Common Game Finder</p>
       <Search onSubmit={handleSearch} />
       <Results games={games} />
     </div>
